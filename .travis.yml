@@ -1,0 +1,26 @@
+# Config file for automatic testing at travis-ci.org
+
+language: python
+python:
+  - 3.6
+
+# sudo false implies containerized builds
+sudo: false
+
+# Notify by email when build results changes
+notifications:
+  email: change
+
+# command to install dependencies, e.g. pip install -r requirements.txt
+before_install:
+  - pip install -U tox-travis pytest nose
+
+install:
+  - pip install -U .
+
+script:
+  - tweeter_sentiment_checker.py
+
+# command to run tests, e.g. python setup.py test
+after_script:
+  - pytest

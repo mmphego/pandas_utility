@@ -1,0 +1,10 @@
+black
+coverage
+flake8
+isort
+pip
+pytest
+pytest-runner
+tox
+twine
+wheel
