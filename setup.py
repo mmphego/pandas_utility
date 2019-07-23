@@ -14,13 +14,20 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 # Package meta-data.
 AUTHOR = "Mpho Mphego"
-DESCRIPTION = "Pandas utility functions"
+DESCRIPTION = "Some useful Pandas utility functions"
 EMAIL = "mpho112@gmail.com"
 NAME = "pandas_utility"
-REQUIRED = [
+
+REQUIRED = ["pandas", "numpy"]
+
+DEV_REQUIRED = [
     # put all required packages here
-    "black", "coverage", "cploredlogs", "flake8", "isort", "loguru"
-    "pip", "pytest", "tox", "twine", "wheel",
+    "black",
+    "coverage",
+    "loguru",
+    "pytest",
+    "twine",
+    "wheel",
 ]
 
 REQUIRES_PYTHON = ">=3.6.0"
@@ -90,7 +97,7 @@ class UploadCommand(Command):
         os.system(f"git tag v{about.get('__version__')}")
         os.system("git push --tags")
         response = input("Do you want to generate a CHANGELOG.md? (y/n) ")
-        if response == 'Y' or 'y':
+        if response == "Y" or "y":
             self.status("Generating the CHANGELOG.md.")
             os.system("make changelog")
         sys.exit()
@@ -106,24 +113,23 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     packages=find_packages(
-        include=['pandas_utility'],
-        exclude=["tests", "*.tests", "*.tests.*", "tests.*"]
-        ),
+        include=["pandas_utility"], exclude=["tests", "*.tests", "*.tests.*", "tests.*"]
+    ),
     install_requires=REQUIRED,
     include_package_data=True,
     scripts=SCRIPTS,
     license="MIT license",
     classifiers=[
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
     ],
-    keywords='pandas_utility',
-    test_suite='tests',
-    tests_require=['pytest', 'unittest'],
+    keywords="pandas_utility",
+    test_suite="tests",
+    tests_require=["pytest", "unittest"],
     project_urls={
         "Bug Reports": f"{URL}/issues",
         "Source": URL,

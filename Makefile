@@ -40,7 +40,7 @@ lint: ## check style with flake8
 	flake8 pandas_utility tests
 
 formatter: ## Format style with black
-	find . -name "*.py" -exec black -l 90 {} \;
+	find . -name "*.py" -exec black --fast -l 90 {} \;
 
 test: ## run tests quickly with the default Python
 	python setup.py test

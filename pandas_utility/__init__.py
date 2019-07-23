@@ -3,6 +3,6 @@
 """Top-level package for Pandas Utility."""
 
 __author__ = """Mpho Mphego"""
-__email__ = 'mpho112@gmail.com'
+__email__ = "mpho112@gmail.com"
 
-from pandas_utility import *
+from pandas_utility.pandas_utility import PandasUtilities
