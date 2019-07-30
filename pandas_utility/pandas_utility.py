@@ -3,6 +3,7 @@
 """Main module."""
 
 import pandas as pd
+import numpy as np
 
 
 class PandasUtilities:
@@ -28,8 +29,6 @@ class PandasUtilities:
         Returns:
             `pandas.core.frame.DataFrame`: Data frame containing random values
         """
-        import numpy as np
-
         if cols_name:
             cols_name = list(cols_name)
             assert len(cols_name) == cols
@@ -159,7 +158,7 @@ class PandasUtilities:
             TYPE: Description
         """
         _filtered = df[column_name].isin(filter_by)
-        return df[_filtered] if not reverse else df[~_filtered]
+        return df[_filtered] if not exclude else df[~_filtered]
 
     @staticmethod
     def filter_by_large_categories(df, column_name, count=3):
@@ -232,7 +231,8 @@ class PandasUtilities:
         """Summary
 
         Args:
-            df (TYPE): Description
+            df (pandas.core.frame.DataFrame): Two-dimensional size-mutable,
+                potentially heterogeneous tabular data
             column_name (TYPE): Description
             bins (TYPE): Description
             labels (TYPE): Description
@@ -289,3 +289,63 @@ class PandasUtilities:
             module: pandas module
         """
         return pd.set_option(option, _format) if not reset else pd.reset_option(option)
+
+    @staticmethod
+    def remove_rows_with_nan(df, column_name):
+        """Remove all rows containing NaN values
+
+        Args:
+            df (pandas.core.frame.DataFrame): Two-dimensional size-mutable,
+                potentially heterogeneous tabular data
+            column_name (str): Remove all the rows where column_name has NaN values.
+
+        Returns:
+            `pandas.core.frame.DataFrame`: DataFrame
+        """
+
+        return df[pd.notna(df[column_name])]
+
+    @staticmethod
+    def col_to_datetime(df, column_name, date_format="%Y-%m-%d"):
+        """
+        Args:
+            df (pandas.core.frame.DataFrame): Two-dimensional size-mutable,
+                potentially heterogeneous tabular data
+            column_name (TYPE): Column to change datetime
+            format (str, optional): Datetime format.
+
+        Returns:
+            `pandas.core.frame.DataFrame`: DataFrame
+        """
+        return pd.to_datetime(df[column_name], format=date_format)
+
+    @staticmethod
+    def binning_column_by_group_names(
+        df,
+        column_name,
+        num_samples,
+        group_names=["Low", "Medium", "High"],
+        include_lowest=True,
+    ):
+        """Summary
+
+        Parameters
+        ----------
+        df : TYPE
+            Description
+        column_name : TYPE
+            Description
+        num_samples : TYPE
+            Description
+        group_names : list, optional
+            Description
+        include_lowest : bool, optional
+            Description
+
+        Returns:
+        --------
+        """
+        bins = np.linspace(min(df[column_name]), max(df[column_name]), num_samples)
+        return pd.cut(
+            df[column_name], bins, labels=group_names, include_lowest=include_lowest
+        )
