@@ -65,7 +65,21 @@ class TestPandasUtilities(unittest.TestCase, PandasUtilities):
             self.assertIsInstance(new_data.dtypes, float)
 
     def test_build_df_from_csvs(self):
-        pass
+        csv_files = [
+            "http://bit.ly/drinksbycountry",
+            "http://bit.ly/imdbratings",
+            "http://bit.ly/smallstocks",
+        ]
+        data = self.build_df_from_csvs(csv_files=csv_files, axis=0)
+        self.assertTrue(
+            all(
+                [
+                    "Close" in data.columns,
+                    "country" in data.columns,
+                    "wine_servings" in data.columns,
+                ]
+            )
+        )
 
     def test_split_df_into_subsets(self):
         pass
@@ -86,4 +100,13 @@ class TestPandasUtilities(unittest.TestCase, PandasUtilities):
         pass
 
     def test_change_display_opt(self):
+        pass
+
+    def test_remove_rows_with_nan(self):
+        pass
+
+    def test_col_to_datetime(self):
+        pass
+
+    def test_binning_column_by_group_names(self):
         pass
