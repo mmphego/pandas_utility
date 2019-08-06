@@ -7,6 +7,7 @@
 ![PyPI](https://img.shields.io/pypi/v/pandas_utility.svg?color=green&label=pypi%20release)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/pandas_utility.svg?label=PyPi%20Downloads)
 [![saythanks](https://img.shields.io/badge/say-thanks-ff69b4.svg)](https://saythanks.io/to/mmphego)
+![Donate](https://img.shields.io/badge/Donate-%24-green.svg)(https://paypal.me/mmphego)
 
 Some useful Pandas utility functions.
 
