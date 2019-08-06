@@ -32,7 +32,7 @@ DEV_REQUIRED = [
 
 REQUIRES_PYTHON = ">=3.6.0"
 URL = "https://github.com/mmphego/pandas_utility"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 
 try:
