@@ -1,6 +1,6 @@
 # Pandas Utility
 
-[![GitHub](https://img.shields.io/github/license/mmphego/pandas_utility.svg)](LICENSE)
+![GitHub](https://img.shields.io/github/license/mmphego/pandas_utility.svg)
 [![Build Status](https://travis-ci.com/mmphego/pandas_utility.svg?token=BFdkPYZWCqwEmQMyYDLi&branch=master)](https://travis-ci.com/mmphego/pandas_utility)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/43713e0b78f547e8912ff05c9350cffb)](https://app.codacy.com/app/mmphego/pandas_utility?utm_source=github.com&utm_medium=referral&utm_content=mmphego/pandas_utility&utm_campaign=Badge_Grade_Dashboard)
 [![Python](https://img.shields.io/badge/Python-3.6%2B-red.svg)](https://www.python.org/downloads/)
