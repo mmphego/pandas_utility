@@ -136,6 +136,7 @@ setup(
         "Bug Reports": f"{URL}/issues",
         "Source": URL,
         "Say Thanks!": f"https://saythanks.io/to/mmphego",
+        "Donate!": f"https://paypal.me/mmphego",
     },
     zip_safe=False,
     # $ setup.py publish support.
