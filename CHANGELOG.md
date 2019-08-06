@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.4](https://github.com/mmphego/pandas_utility/tree/v0.1.4) (2019-08-06)
+[Full Changelog](https://github.com/mmphego/pandas_utility/compare/v0.1.3...v0.1.4)
+
 ## [v0.1.3](https://github.com/mmphego/pandas_utility/tree/v0.1.3) (2019-08-06)
 
 
