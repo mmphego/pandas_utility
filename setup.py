@@ -6,6 +6,7 @@
 import io
 import os
 import sys
+from subprocess import Popen
 from shutil import rmtree
 
 from setuptools import Command, find_packages, setup
@@ -91,17 +92,32 @@ class UploadCommand(Command):
         self.status("Building Source and Wheel (universal) distribution...")
         os.system(f"{sys.executable} setup.py sdist bdist_wheel --universal")
 
-        self.status("Uploading the package to PyPI via Twine...")
-        os.system("twine upload dist/*")
+        try:
+            cmd = "twine test dist/*".split(" ")
+            p = Popen(cmd, bufsize=-1)
+            p.communicate()
+            assert p.returncode == 0
+        except AssertionError:
+            self.status("Failed Twine Test.")
+            raise
 
-        self.status("Pushing git tags...")
-        os.system(f"git tag v{about.get('__version__')}")
-        os.system("git push --tags")
-        response = input("Do you want to generate a CHANGELOG.md? (y/n) ")
-        if response.lower() == "y":
-            self.status("Generating the CHANGELOG.md.")
-            os.system("make changelog")
-        sys.exit()
+        try:
+            self.status("Uploading the package to PyPI via Twine...")
+            cmd = "twine upload dist/*".split()
+            p = Popen(cmd, bufsize=-1)
+            p.communicate()
+        except AssertionError:
+            self.status("Failed to upload to PyPi.")
+            raise
+        else:
+            self.status("Pushing git tags...")
+            os.system(f"git tag v{about.get('__version__')}")
+            os.system("git push --tags")
+            response = input("Do you want to generate a CHANGELOG.md? (y/n) ")
+            if response.lower() == "y":
+                self.status("Generating the CHANGELOG.md.")
+                os.system("make changelog")
+            sys.exit(p.returncode)
 
 
 setup(
