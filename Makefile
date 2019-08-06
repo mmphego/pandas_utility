@@ -46,7 +46,7 @@ test: ## run tests quickly with the default Python
 	python setup.py test
 
 changelog: ## Generate changelog for current repo
-	docker run -it --rm -v "$(pwd)":/usr/local/src/your-app mmphego/github-changelog
+	docker run -it --rm -v "$$(pwd)":/usr/local/src/your-app mmphego/github-changelog
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source pandas_utility setup.py test

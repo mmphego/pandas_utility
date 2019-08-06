@@ -449,3 +449,20 @@ class PandasUtilities:
         return pd.cut(
             df[column_name], bins, labels=group_names, include_lowest=include_lowest
         )
+
+    @staticmethod
+    def open_google_sheet(token):
+        """Google Spreadsheet CSV into A Pandas Dataframe
+
+        Parameters
+        ----------
+        token : str
+            Google Spreadsheet token ID
+
+        Returns
+        -------
+        `pandas.core.frame.DataFrame`
+            DataFrame
+        """
+        url = 'https://docs.google.com/spreadsheets/d/{}/export?format=csv'.format(token)
+        return pd.read_csv(url)
