@@ -72,10 +72,11 @@ Out[4]:
 
 ```
 
-# Oh, Thanks!
+# Donations
 
-By the way...
-Click if you'd like to [saythanks](https://saythanks.io/to/>mmphego)... :) else *Star* it.
+If you like this and want to buy me a cup of coffee, please click the donation button above or click this [link](https://paypal.me/mmphego) ☕
+
+Also you can click if you'd like to [saythanks](https://saythanks.io/to/mmphego)... :) else *Star* it.
 
 ✨🍰✨
 
