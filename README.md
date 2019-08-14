@@ -80,9 +80,12 @@ Also you can click if you'd like to [saythanks](https://saythanks.io/to/mmphego)
 
 ✨🍰✨
 
-# Feedback
+# Contributing
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
-Feel free to fork it or send me PR to improve it.
+## Changelog
+
+Every release, along with the migration instructions, is documented on the Github [Releases](https://github.com/mmphego/pandas_utility/releases) page.
 
 # Credits
 

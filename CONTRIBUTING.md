@@ -52,9 +52,9 @@ Ready to contribute? Here's how to set up pandas_utility for local development.
 
 1.  Fork the pandas_utility repo on GitHub.
 2.  Clone your fork locally:
-    ```bash
-        $ git clone git@github.com:your_name_here/pandas_utility.git
-    ```
+```bash
+    git clone git@github.com:your_name_here/pandas_utility.git
+```
 
 3.  Install your local copy into a virtualenv. Assuming you have
     `virtualenvwrapper` installed, this is how you set up your fork for
@@ -105,14 +105,11 @@ Before you submit a pull request, check that it meets these guidelines:
 
 To run a subset of tests:
 ```bash
-python3 -m unittest [tests.test]()pandas_utility
+python3 -m unittest tests.test_pandas_utility
 ```
 
 ## Deploying
 
 A reminder for the maintainers on how to publish. Make sure all your
 changes are committed (including an entry in CHANGELOG.md).
-Then run:
-    ```bash
-    python setup.py publish
-    ```
+Then run: `python setup.py publish`
