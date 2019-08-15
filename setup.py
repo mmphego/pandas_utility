@@ -83,7 +83,7 @@ class UploadCommand(Command):
             pass
 
         try:
-            import twine
+            import twine  # noqa:401
         except ImportError:
             errmsg = "\n'Twine' is not installed.\n\nRun: \n\tpip install twine"
             self.status(errmsg)

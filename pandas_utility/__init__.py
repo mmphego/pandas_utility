@@ -5,4 +5,4 @@
 __author__ = """Mpho Mphego"""
 __email__ = "mpho112@gmail.com"
 
-from pandas_utility.pandas_utility import PandasUtilities
+from pandas_utility.pandas_utility import PandasUtilities  # noqa:401

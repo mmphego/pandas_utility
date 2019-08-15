@@ -1,8 +1,13 @@
+---
 # Config file for automatic testing at travis-ci.org
 
 language: python
+
+dist: xenial
+
 python:
-  - 3.6
+  - "3.6"
+  - "3.7"
 
 # sudo false implies containerized builds
 sudo: false
@@ -11,13 +16,24 @@ sudo: false
 notifications:
   email: change
 
-# command to install dependencies, e.g. pip install -r requirements.txt
-before_install:
-  - pip install -U tox-travis pytest nose
+stages:
+  - lint
+  - test
 
-install:
-  - pip install -U .
+jobs:
+  include:
+    - stage: lint
+      install:
+          - pip install pre-commit
+          - pre-commit install-hooks
+      script:
+          - pre-commit run --all-files
 
-# command to run tests, e.g. python setup.py test
-script:
-  - pytest
+    - stage: test
+      install:
+          - pip install .
+          - pip install pytest pytest-coverage coveralls
+      script:
+          - pytest -ra --cov=pandas_utility tests
+          - coverage report -m
+          - coveralls

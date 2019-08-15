@@ -7,12 +7,14 @@ repos:
         -   id: check-ast
         -   id: check-executables-have-shebangs
             exclude: "__init__.py"
+        -   id: check-merge-conflict
         -   id: check-symlinks
         -   id: check-yaml
         -   id: end-of-file-fixer
-        -   id: trailing-whitespace
         -   id: flake8
-            args: [--max-line-length=90, --ignore=F401]
+            args: [--max-line-length=90]
+            additional_dependencies: [flake8-blind-except, flake8-black, flake8-isort, flake8-pytest]
+        -   id: trailing-whitespace
 
     -   repo: https://github.com/jumanjihouse/pre-commit-hooks
         rev: ''
@@ -57,3 +59,10 @@ repos:
         hooks:
         -   id: forbid-crlf
         -   id: forbid-tabs
+
+    -   repo: https://github.com/pre-commit/pygrep-hooks
+        rev: ''
+        hooks:
+        -   id: python-no-eval
+        -   id: python-no-log-warn
+        -   id: rst-backticks
