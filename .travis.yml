@@ -23,15 +23,17 @@ stages:
 jobs:
   include:
     - stage: lint
-      install:
+      before_install:
           - pip install pre-commit
+      install:
           - pre-commit install-hooks
       script:
           - pre-commit run --all-files
 
     - stage: test
+      before_install:
+          - pip install -u .
       install:
-          - pip install .
           - pip install pytest pytest-coverage coveralls
       script:
           - pytest -ra --cov=pandas_utility tests
