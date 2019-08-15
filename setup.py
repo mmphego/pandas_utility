@@ -6,8 +6,8 @@
 import io
 import os
 import sys
-from subprocess import Popen
 from shutil import rmtree
+from subprocess import Popen
 
 from setuptools import Command, find_packages, setup
 

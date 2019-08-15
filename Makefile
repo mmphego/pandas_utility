@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help changelog
+.PHONY: all changelog clean clean-build clean-pyc clean-test coverage dist formatter help install lint release test
 .DEFAULT_GOAL := help
 
 define PRINT_HELP_PYSCRIPT
@@ -12,6 +12,7 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
+all: install test
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -43,10 +44,10 @@ formatter: ## Format style with black
 	find . -name "*.py" -exec black --fast -l 90 {} \;
 
 test: ## run tests quickly with the default Python
-	python setup.py test
+	pytest
 
 changelog: ## Generate changelog for current repo
-	docker run -it --rm -v "$$(pwd)":/usr/local/src/your-app mmphego/github-changelog
+	docker run -u 1000:1000 -it --rm -v "$$(pwd)":/usr/local/src/your-app mmphego/github-changelog
 
 coverage: ## check code coverage quickly with the default Python
 	coverage run --source pandas_utility setup.py test

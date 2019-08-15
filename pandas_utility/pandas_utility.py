@@ -464,5 +464,7 @@ class PandasUtilities:
         `pandas.core.frame.DataFrame`
             DataFrame
         """
-        url = 'https://docs.google.com/spreadsheets/d/{}/export?format=csv'.format(token)
+        url = "https://docs.google.com/spreadsheets/d/{}/export?format=csv".format(
+            token
+        )
         return pd.read_csv(url)
