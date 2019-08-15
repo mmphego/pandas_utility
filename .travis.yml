@@ -6,8 +6,7 @@ language: python
 dist: bionic
 
 python:
-  - "3.6"
-  - "3.7"
+  - 3.6
 
 # sudo false implies containerized builds
 sudo: false
@@ -32,10 +31,10 @@ jobs:
 
     - stage: test
       before_install:
-          - pip install -u .
+          - pip install -U .
       install:
           - pip install pytest pytest-coverage coveralls
       script:
           - pytest -ra --cov=pandas_utility tests
           - coverage report -m
-          - coveralls
+          # - coveralls
