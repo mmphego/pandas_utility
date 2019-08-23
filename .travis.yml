@@ -24,11 +24,10 @@ jobs:
         -   stage: lint
             before_install:
                 -   pip install pre-commit
-                -   pip install -r requirements.txt
             install:
                 -   pre-commit install
             script:
-                -   pre-commit run --all-files
+                -   SKIP=pytest pre-commit run --all-files
 
         -   stage: test
             before_install:
