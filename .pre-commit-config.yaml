@@ -1,69 +1,208 @@
----
-fail_fast : true
+##########################################################################################
+#                                                                                        #
+#                       Pre-commit configuration file                                    #
+#                                                                                        #
+##########################################################################################
+default_language_version:
+    python: python3
 
 repos:
+    ####################################### Various Checks ###############################
+    # Various checks
     -   repo: https://github.com/pre-commit/pre-commit-hooks
         rev: v2.3.0
         hooks:
         -   id: check-ast
+            description: Simply check whether files parse as valid python.
+        -   id: check-builtin-literals
+            description: Require literal syntax when initializing empty,
+                         or zero Python builtin types.
+        -   id: check-docstring-first
+            description: Checks for a common error of placing code before the docstring.
+        -   id: check-added-large-files
+            description: Prevent giant files from being committed.
         -   id: check-executables-have-shebangs
-            exclude: "__init__.py"
+            description: Checks that non-binary executables have a proper shebang.
         -   id: check-merge-conflict
+            description: Check for files that contain merge conflict strings.
         -   id: check-symlinks
+            description: Checks for symlinks which do not point to anything.
         -   id: check-yaml
+            description: Attempts to load all yaml files to verify syntax.
+        -   id: detect-private-key
+            description: Checks for the existence of private keys.
         -   id: end-of-file-fixer
+            description: Makes sure files end in a newline and only a newline.
         -   id: flake8
-            args: [--max-line-length=90]
-            additional_dependencies: [flake8-blind-except, flake8-black, flake8-isort, flake8-pytest]
+            description: Python style guide enforcement
+            args: [
+                '--max-line-length=90',
+                '--config=setup.cfg',
+                '--ignore=
+                    # Ignore warnings about:
+                    S101,  # Use of assert
+                    S322,  # Use of input function
+                    S404,  # importing subprocess
+                    S603,  # calling subprocess.Popen without shell=True
+                    S607,  # calling subprocess.Popen without a full path to executable
+                '
+            ]
+            additional_dependencies: [
+                flake8-bandit,
+                flake8-black,
+                flake8-blind-except,
+                flake8-builtins,
+                flake8-deprecated,
+                flake8-eradicate,
+                flake8-isort,
+                flake8-pytest,
+                # flake8-spellcheck,
+                flake8-tabs,
+            ]
         -   id: trailing-whitespace
 
-    -   repo: https://github.com/jumanjihouse/pre-commit-hooks
-        rev: ''
+    # Python minor syntax related checks
+    -   repo: https://github.com/pre-commit/pygrep-hooks
+        rev: v1.4.1
         hooks:
-        -   id: shellcheck
+        -   id: python-check-mock-methods
+            description: Prevent common mistakes of assert mck.not_called(),
+                         assert mck.called_once_with(...) and mck.assert_called.
+        -   id: python-no-eval
+            description: A quick check for the eval() built-in function
+        -   id: python-no-log-warn
+            description: A quick check for the deprecated .warn() method of python loggers
+        -   id: python-use-type-annotations
+            description: Enforce that python3.6+ type annotations are used instead of
+                         type comments
+        -   id: rst-backticks
+            description: Detect common mistake of using single backticks when writing rst
 
-    -   repo: https://github.com/jumanjihouse/pre-commit-hooks
-        rev: ''
+    # Python security check
+    -   repo: https://github.com/Lucas-C/pre-commit-hooks-bandit
+        rev: v1.0.4
         hooks:
-        -   id: script-must-have-extension
-            name: Local policy is to use .sh extension for shell scripts
-            types: [shell, executable]
+        -   id: python-bandit-vulnerability-check
+            description: Find common security issues in your Python code using bandit
+            args: [
+                "-ll", # Ignore LOW severity issues
+                "--skip", "B322", # Ignore input issue
+                "--recursive",
+                "--exclude tests",
+            ]
+            files: .py$
+    ####################################### Linters ######################################
+    # YAML Linter
+    -   repo: https://github.com/adrienverge/yamllint.git
+        rev: v1.17.0
+        hooks:
+        -   id: yamllint
+            description: A linter for YAML files.
+            # https://yamllint.readthedocs.io/en/stable/configuration.html#custom-configuration-without-a-config-file
+            args: [
+                '--format', 'parsable',
+                '--strict',
+                '-d', "{
+                    extends: relaxed,
+                    rules: {
+                        hyphens: {max-spaces-after: 4},
+                        indentation: {spaces: consistent, indent-sequences: whatever,},
+                        key-duplicates: {},
+                        key-duplicates: {},
+                        line-length: {max: 90}},
+                    }"
+            ]
 
+    # Makefile Linter
     -   repo: https://github.com/Lucas-C/pre-commit-hooks-go
-        rev: ''
+        rev: v1.0.0
         hooks:
         -   id: checkmake
+            description: Linter/analyzer for Makefiles
 
-    -   repo: https://github.com/asottile/seed-isort-config
-        rev: v1.9.2
+    # Shell Linter
+    # NOTE: Hook requires shellcheck [installed].
+    -   repo: https://github.com/jumanjihouse/pre-commit-hooks
+        rev: 1.11.0
         hooks:
-        -   id: seed-isort-config
+        -   id: script-must-have-extension
+            description: Local policy is to use .sh extension for shell scripts
+            types: [shell, executable]
+        -   id: shellcheck
+            description: ShellCheck, a static analysis tool for shell scripts
+            types: [shell, executable]
 
-    -   repo: https://github.com/pre-commit/mirrors-isort
-        rev: v4.3.20
+    # Dockerfile Linter
+    # NOTE: Hook requires Docker [installed].
+    -   repo: https://github.com/adarnimrod/docker-pre-commit
+        rev: v0.3.0
         hooks:
-        -   id: isort
+        -   id: hadolint
+        -   id: docker-compose
+        -   id: dockerfile-lint
 
-    -   repo: https://github.com/psf/black
-        rev: 19.3b0
+    # Prose (speech or writing) Linter
+    -   repo: https://github.com/amperser/proselint
+        rev: 0.10.2
         hooks:
-        -   id: black
-            language_version: python3.6
+        -   id: proselint
+            description: An English prose (speech or writing) linter
+            types: [ rst, markdown ]
 
+    ################################### Code Format ######################################
+
+    # Upgrade Python syntax
     -   repo: https://github.com/asottile/pyupgrade
         rev: v1.22.1
         hooks:
         -   id: pyupgrade
+            description: Automatically upgrade syntax for newer versions of the language.
+            args: ['--py3-plus']
 
-    -   repo: https://github.com/Lucas-C/pre-commit-hooks
-        rev: ''
+    # Add `known_third_party` to isort.cfg
+    -   repo: https://github.com/asottile/seed-isort-config
+        rev: v1.9.2
         hooks:
-        -   id: forbid-crlf
-        -   id: forbid-tabs
+        -   id: seed-isort-config
+            description: Statically populate the `known_third_party` `isort` setting.
 
-    -   repo: https://github.com/pre-commit/pygrep-hooks
-        rev: ''
+    # Sort imports
+    -   repo: https://github.com/pre-commit/mirrors-isort
+        rev: v4.3.21
         hooks:
-        -   id: python-no-eval
-        -   id: python-no-log-warn
-        -   id: rst-backticks
+        -   id: isort
+            description: Library to sort imports.
+            args: [
+                "--force-grid-wrap=0",
+                "--line-width=90",
+                "--multi-line=3",
+                "--trailing-comma",
+                "--use-parentheses",
+            ]
+
+    # Python code format
+    -   repo: https://github.com/psf/black
+        rev: 19.3b0
+        hooks:
+        -   id: black
+            description: The uncompromising Python code formatter
+            language_version: python3.6
+
+    ###################################### Execute Tests #################################
+    # Pytest
+    -   repo: local
+        hooks:
+        -   id: pytest
+            name: pytest
+            description: Run local tests with Pytest
+            language: system
+            # Check if pytest is installed,
+            # exit instantly on first error or failed test, increase verbosity
+            entry: bash -c "if ! command -v pytest >/dev/null;then
+                                pytest
+                            else
+                                pytest -xsv;
+                            fi"
+            files: \test*.py$
+            types: [python]
+            always_run: true

@@ -1,40 +1,41 @@
 ---
-# Config file for automatic testing at travis-ci.org
+# Config file for automatic testing at travis-ci.com
 
 language: python
 
 dist: bionic
 
 python:
-  - 3.6
+    -   3.6
 
 # sudo false implies containerized builds
 sudo: false
 
 # Notify by email when build results changes
 notifications:
-  email: change
+    email: change
 
 stages:
-  - lint
-  - test
+    -   lint
+    -   test
 
 jobs:
-  include:
-    - stage: lint
-      before_install:
-          - pip install pre-commit
-      install:
-          - pre-commit install-hooks
-      script:
-          - pre-commit run --all-files
+    include:
+        -   stage: lint
+            before_install:
+                -   pip install pre-commit
+                -   pip install -r requirements.txt
+            install:
+                -   pre-commit install
+            script:
+                -   pre-commit run --all-files
 
-    - stage: test
-      before_install:
-          - pip install -U .
-      install:
-          - pip install pytest pytest-coverage coveralls python-coveralls
-      script:
-          - pytest -ra --cov=pandas_utility tests
-      after_success:
-          - coveralls
+        -   stage: test
+            before_install:
+                -   pip install -U .
+            install:
+                -   pip install pytest pytest-coverage coveralls python-coveralls
+            script:
+                -   pytest -xra --cov=pandas_utility tests
+            after_success:
+                -   coveralls

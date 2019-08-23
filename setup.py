@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 """The setup script."""
-
-import io
 import os
 import sys
 from shutil import rmtree
@@ -37,7 +35,7 @@ VERSION = None
 
 
 try:
-    with io.open(os.path.join(here, "README.md"), encoding="utf-8") as f:
+    with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
         LONG_DESCRIPTION = "\n" + f.read()
 except FileNotFoundError:
     LONG_DESCRIPTION = DESCRIPTION
@@ -48,7 +46,9 @@ about = {}
 if not VERSION:
     project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
     with open(os.path.join(here, project_slug, "__version__.py")) as f:
-        exec(f.read(), about)
+        _version_info = f.readline().strip()
+        _version_info = _version_info.replace(" ", "").replace('"', "").replace('"', "")
+        about = dict([_version_info.split("=")])
 else:
     about["__version__"] = VERSION
 
@@ -68,6 +68,12 @@ class UploadCommand(Command):
     def status(s):
         """Prints things in bold."""
         print(f"\033[1m{s}\033[0m")
+
+    @staticmethod
+    def executer(cmd):
+        p = Popen(cmd, bufsize=-1)
+        p.communicate()
+        return p.returncode
 
     def initialize_options(self):
         pass
@@ -90,13 +96,11 @@ class UploadCommand(Command):
             raise SystemExit(1)
 
         self.status("Building Source and Wheel (universal) distribution...")
-        os.system(f"{sys.executable} setup.py sdist bdist_wheel --universal")
+        cmd = f"{sys.executable} setup.py sdist bdist_wheel --universal".split(" ")
 
         try:
-            cmd = "twine test dist/*".split(" ")
-            p = Popen(cmd, bufsize=-1)
-            p.communicate()
-            assert p.returncode == 0
+            cmd = "twine check dist/*".split(" ")
+            assert self.executer(cmd) == 0
         except AssertionError:
             self.status("Failed Twine Test.")
             raise
@@ -104,20 +108,22 @@ class UploadCommand(Command):
         try:
             self.status("Uploading the package to PyPI via Twine...")
             cmd = "twine upload dist/*".split()
-            p = Popen(cmd, bufsize=-1)
-            p.communicate()
+            self.executer(cmd)
         except AssertionError:
             self.status("Failed to upload to PyPi.")
             raise
         else:
             self.status("Pushing git tags...")
-            os.system(f"git tag v{about.get('__version__')}")
-            os.system("git push --tags")
+            cmd = f"git tag v{about.get('__version__')}".split(" ")
+            self.executer(cmd)
+            cmd = "git push --tags"
+            self.executer(cmd)
+
             response = input("Do you want to generate a CHANGELOG.md? (y/n) ")
             if response.lower() == "y":
                 self.status("Generating the CHANGELOG.md.")
-                os.system("make changelog")
-            sys.exit(p.returncode)
+                cmd = "make changelog"
+                self.executer(cmd)
 
 
 setup(
