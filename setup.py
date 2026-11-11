@@ -14,7 +14,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 # Package meta-data.
 AUTHOR = "Mpho Mphego"
 DESCRIPTION = "Some useful Pandas utility functions"
-EMAIL = "mpho112@gmail.com"
+EMAIL = ""
 NAME = "pandas_utility"
 
 REQUIRED = ["pandas", "numpy"]
